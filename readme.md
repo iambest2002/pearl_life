@@ -15,6 +15,7 @@ Bonus and random System: Make a bonus and random system to make you can followin
 
 
 
+
 Here is pearl life's essential skill your need to master in this picture. It includes almost all skills in daily work and projects. For example, in development, your need to use docker to employ your server, use Git to organize your project, use Grafana to monitor your server, and use Jenkins to make ci/cd work.   Besides that, we need to use CPP, python, js, java, CSS, and HTML to program. It relies on more than one language because every language has self-advantage. In the middle models part, we use MySQL to save my data,  Nginx to do the proxy server, TensorFlow to make a model for recommend and search,  Redis to make cache data,  Vue to build front interaction,  and so on.
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/ead78fe716cd4484b82a6bd89758bfdd.png)
            ------------------------------------------------------------------   1-1  basic skills
