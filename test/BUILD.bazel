@@ -1,0 +1,11 @@
+cc_test(
+  name = "test_log",
+  srcs = glob(
+      ["*.cc=pp"],
+  ),
+  deps = [
+    "@com_google_googletest//:gtest_main",
+  ],
+  linkopts = ["-pthread"],
+  visibility = ["//visibility:public"],
+)

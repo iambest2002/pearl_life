@@ -3,18 +3,22 @@
 #include <condition_variable>
 #include <iostream>
 #include <mutex>
+#include <queue>
 #include <string>
 #include <thread>
 #include <time.h>
-#include <queue>
-using namespace std;
+
+#define BUFFER_SIZE 128
+#define STR_SIZE 1024
 
 namespace pearl {
 namespace network {
 namespace log {
-#define BUFFER_SIZE 128
 
-template <class Y> class LoggerQueue {
+
+using namespace std;
+template <class T> 
+class LoggerQueue {
 public:
   void push(const T &data) {
     lock_guard<mutex> lock(mutex_);
@@ -22,11 +26,11 @@ public:
     condition_.notify_one();
   }
   T pop() {
-    lock_guard<mutex> lock(mutex_);
-    while (queue_empty()) {
-        condition_.wait(lock);
+    unique_lock<mutex> lock(mutex_);
+    while (queue_.empty()) {
+      condition_.wait(lock);
     }
-    T ret - queue_.front();
+    T ret = queue_.front();
     queue_.pop();
     return ret;
   }
@@ -34,7 +38,7 @@ public:
 private:
   queue<T> queue_;
   mutex mutex_;
-  condition_variable cocondition_;
+  condition_variable condition_;
 };
 
 // 时间打印类
@@ -55,14 +59,15 @@ private:
   int64_t m_time = 0;
 };
 
-#define LOG_INFO(logmsgFormat, ...)                                            \
-  do {                                                                         \
-    Logger &logger = logger::instance();                                       \
-    logger.SetLogLevel(EnLogLevel::INFO);                                      \
-    char buf{BUFFER_SIZE} = {};                                                \
-    snprintf(buf, 1024, logmsgFormat, ##__VA_ARGS__);                          \
-    logger.LOGINFO(buf);                                                       \
-  } while (0)
+#define LOG_INFO(logmsgformat, ...)                           \
+    do                                                        \
+    {                                                         \
+        Logger &logger = Logger::instance();        \
+        char str[STR_SIZE] = {0};                             \
+        snprintf(str, STR_SIZE, logmsgformat, ##__VA_ARGS__); \
+        logger.LOGINFO(str);                                 \
+    } while (0);
+
 
 #define LOG_ERROR(logmsgFormat, ...)                                           \
   do {                                                                         \
@@ -71,7 +76,7 @@ private:
     char buf[BUFFER_SIZE] = {0};                                               \
     snprintf(buf, 1024, logmsgFormat, ##__VA_ARGS__);                          \
     logger.LOGERROR(buf);                                                      \
-  } while (0)
+  } while (0);
 
 #define LOG_FATAL(logmsgFormat, ...)                                           \
   do {                                                                         \
@@ -81,7 +86,7 @@ private:
     snprintf(buf, 1024, logmsgFormat, ##__VA_ARGS__);                          \
     logger.LOGFATAL(buf);                                                      \
     exit(-1);                                                                  \
-  } while (0)
+  } while (0);
 
 /*
 introdcution:  achieve a logger module.
@@ -104,7 +109,7 @@ public:
     return instance;
   }
   void SetLogLevel(EnLogLevel level) { m_log_level = level; }
-  void LOGINFO(const string &msg) {
+  void LOGINFO(string msg) {
     SetLogLevel(INFO);
     log(msg);
   }
@@ -117,24 +122,24 @@ public:
     log(msg);
     exit(0);
   }
-  void log(const string &msg) {
+  void log(string msg) {
     string begin_info;
     switch (m_log_level) {
-    case INFO: {
-      begin_info = "[INFO]:";
-      break;
+      case INFO: {
+        begin_info = "[INFO]:";
+        break;
+      }
+      case ERROR: {
+        begin_info = "[ERROR]:";
+        break;
+      }
+      case FATAL: {
+        begin_info = "[FATAL]:";
+        break;
+      }
     }
-    case ERROR: {
-      begin_info = "[ERROR]:";
-      break;
-    }
-    case FATAL: {
-      begin_info = "[FATAL]:";
-      break;
-    }
-      begin_info += msg;
-      m_log_queue.push(begin_info);
-    }
+    begin_info += msg;
+    m_log_queue.push(begin_info);
   }
 
 private:
@@ -150,12 +155,13 @@ private:
                 now_time->tm_mon + 1, now_time->tm_mday);
         FILE *file_ptr = fopen(file_name, "a+");
         if (file_ptr == nullptr) {
-          LOG_ERROR << "logger file :" << file_name << "open error";
+          cout << "logger file :" << file_name << "open error";
         }
-        string msg;
-        string time_prefix = TimeStamp::now().to_string();
+        string msg = "222";
+        char time_buf[128] = {0};
+            sprintf(time_buf, "%2d:%2d:%2d=>", now_time->tm_hour, now_time->tm_min, now_time->tm_sec);
         msg = m_log_queue.pop();
-        msg.insert(0, time_prefix.c_str());
+        msg.insert(0, time_buf);
         msg += "\n";
         fputs(msg.c_str(), file_ptr);
         fclose(file_ptr);
@@ -163,21 +169,9 @@ private:
     });
     write_thread.detach();
   }
-  Logger(const Logger &) = delete;
-  Logger(Logger &&) = delete;
-  Logger &operator=(const Logger &) = delete;
 };
 } // namespace log
 } // namespace network
 } // namespace pearl
-
-
-
-
-
-
-
-
-
 
 #endif
