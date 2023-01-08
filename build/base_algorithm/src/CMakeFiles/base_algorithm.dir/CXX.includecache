@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../base_algorithm/include/my_algorithm.hpp
+vector
+-
+
+/root/liupeng/pearl_house/pearl_house/base_algorithm/src/my_algorithm.cpp
+my_algorithm.hpp
+/root/liupeng/pearl_house/pearl_house/base_algorithm/src/my_algorithm.hpp
+

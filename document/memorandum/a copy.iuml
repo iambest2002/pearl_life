@@ -1,0 +1,53 @@
+@startuml
+
+class emotion_recognition {
+
+
++ model_name_list[]
++ emotion_list[]
++ get_model()
++ get_emotion()
+}
+
+
+class emotion_feature {
++ video_data
++ audio_data
++ audio_file
++ video_file
++ extract_audio()
++ extract_video()
+}
+class algorithm_model{
++ load()
++ predict()
+}
+class cv2{
++ VideoCapture()
++ CascadeClassifier()
+}
+
+
+
+
+class feature{
++ melspectrogram()
+
+}
+
+class librosa{
+}
+
+librosa<|--feature
+emotion_feature::extract_video --> cv2::VideoCapture:加载视频
+emotion_feature::extract_audio--> feature::melspectrogram:加载语音
+
+emotion_recognition --> algorithm_model::load :加载模型
+emotion_recognition --> algorithm_model::predict:预测结果
+
+emotion_recognition --> emotion_feature : 获取数据特征
+
+
+
+
+@enduml

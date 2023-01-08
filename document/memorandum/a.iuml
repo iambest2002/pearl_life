@@ -1,0 +1,43 @@
+@startuml
+
+class emotion_recognition {
++ model_name_list[]
++ emotion_list[]
++ get_model()
++ get_emotion()
+
+}
+
+
+class online_result{
+
++ oneline_picture
++ extract_picture()
+}
+class final_results{
++ final_emotions
++ calc_emotions()
+}
+
+
+
+class cv2{
++ VideoCapture()
++ CascadeClassifier()
++ rectangle()
++ putText()
+}
+
+
+
+online_result::extract_picture--> emotion_recognition :获取实时情感
+online_result::extract_picture--> cv2 : 渲染视频帧
+
+final_results::calc_emotions--> emotion_recognition : 获取最终情感分布
+
+
+
+
+
+
+@enduml
