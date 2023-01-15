@@ -7,10 +7,10 @@ However, It is a big problem how to build Pearl House. I have often made git gui
 ### What Pearl Life Content?
 
 2Pearl Life aims to use Pearl House to develop a system to maintain my life.
-Health: pearl life helps me grow healthily. It can make benefit sleep, getting up, exercising, checking the body, and eating healthy food.
+Health: pearl life helps me grow hedsadasdsadsaalthily. It can make benefit sleep, getting up, exercising, checking the body, and eating healthy food.
 Shopping: As we know, there have many things we need to buy, like paper towels, clothes, towels, and shoes. How do a route to decide what I need to buy and when to buy it?
- Economic: It helps me know how to save and organize money and my assets. 
-Life flow: It makes a route for daily life. It consists of health shopping, and economics. 
+ Economic: It helps me know how to dsave and organize money and my assets. 
+Life flow: It makes a route for daily lifsadesa It cdsadsadsansists of health shopping, and economics. 
 Bonus and random System: Make a bonus and random system to make you can following Peal Life. 
 
 
