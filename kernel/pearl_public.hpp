@@ -3,10 +3,10 @@
 #include <condition_variable>
 #include <iostream>
 #include <mutex>
+#include <queue>
 #include <string>
 #include <thread>
 #include <time.h>
-#include <queue>
 using namespace std;
 
 namespace pearl {
@@ -24,7 +24,7 @@ public:
   T pop() {
     lock_guard<mutex> lock(mutex_);
     while (queue_empty()) {
-        condition_.wait(lock);
+      condition_.wait(lock);
     }
     T ret - queue_.front();
     queue_.pop();
@@ -84,7 +84,7 @@ private:
   } while (0)
 
 /*
-introdcution:  achieve a logger module.
+description:  achieve a logger module.
 tips: 市面上的日志基本上就是格式  +  debug等级 + 一些其他配置。
 例如Python的日志系统分时间切片， 还有等级之类的。 java的日志也很有名，
 C++有一个日志是抄java实现的。 日志基本上就几个东西， 一个是等级，
@@ -171,13 +171,77 @@ private:
 } // namespace network
 } // namespace pearl
 
+namespace pearl {
+namespace code_design {
+namespace design_model {
+
+/*
+description:  a chieve singleton.
+tips: 
+*/
+class SingleTon {
+
+private:
+    SingleTon() {}
+    ~SingleTon() {}
+    SingleTon(const SingleTon &) = delete;
+    SingleTon &operator=(const SingleTon &) = delete;
+    static std::mutex mtx;   
+    static SingleTon *volatile p;
+public:
+    static SingleTon &GetInStance() {
+        static SingleTon ref;
+        return ref;
+    }
+    static SingleTon *GetInStance_() {
+       if(p==nullptr){
+            // lock guard will release mtx while get out of {}. 
+            lock_guard<std::mutex> guard(mtx);  
+            if(p==nullptr){//we add lock in {}, it cause we need to add extern if judgement to make p is null
+                p = new SingleTon();
+            }
+        }
+        return p;
+    }
+};
+
+
+/*
+
+Singleton* volatile Singleton:: p = nullptr;
+std::mutex Singleton::mtx;// the locker is only has one.     we define in class , init in this. same code , diff operator.
+int main(){
+    Singleton * p = Singleton::GetInstance();
+    Singleton * p2 = Singleton::GetInstance();
+    if(p==p2){
+        cout<<"same"<<endl;
+    }
+    else {
+        cout<<"unique"<<endl;       
+    }
+
+}
 
 
 
+#include<iostream>
+using namespace std;
+Singleton * Singleton::p = new Singleton();
+int main(){
+    Singleton * p = Singleton::GetInstance();
+    Singleton * p2 = Singleton::GetInstance();
+    if(p==p2){
+        cout<<"same"<<endl;
+    }
+    else {
+        cout<<"unique"<<endl;       
+    }
+}
+*/
 
 
-
-
-
+} // namespace design_model
+} // namespace code_design
+} // namespace pearl
 
 #endif
