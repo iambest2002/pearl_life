@@ -1,2 +1,0 @@
-/usr/bin/ar qc ../../../lib/libbase_algorithm.a  CMakeFiles/base_algorithm.dir/my_algorithm.cpp.o
-/usr/bin/ranlib ../../../lib/libbase_algorithm.a

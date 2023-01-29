@@ -1,11 +1,24 @@
-cc_test(
+
+load("@rules_cc//cc:defs.bzl", "cc_binary", "cc_library")
+
+cc_binary(
   name = "test_log",
-  srcs = glob(
-      ["*.cc=pp"],
-  ),
+  srcs = ["test_log.cpp"],
+  linkopts = ["-pthread"],
+  visibility = ["//visibility:public"],
+)
+
+
+# https://docs.bazel.build/versions/master/be/c-cpp.html#cc_binary
+cc_binary(
+  name = "test_singleton",
+  srcs = ["test_singleton.cpp"],
   deps = [
-    "@com_google_googletest//:gtest_main",
+    "//kernel:pearl_public",
   ],
   linkopts = ["-pthread"],
   visibility = ["//visibility:public"],
 )
+
+
+

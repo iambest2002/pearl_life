@@ -1,18 +1,6 @@
 # pearl_house  ![license](https://img.shields.io/badge/License-MIT-brightgreen.svg) ![[code-style](https://github.com/psf/google)](https://img.shields.io/static/v1?label=code%20style&message=google&color=yellow&style=flat-square)
 
 
-1111
-
-2222
-
-3333
-
-4444
-
-5555 
-
-dev
-
 
 
 ## Introduction

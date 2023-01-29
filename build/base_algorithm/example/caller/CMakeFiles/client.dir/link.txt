@@ -1,1 +1,0 @@
-/usr/bin/c++   -g -std=c++11 -fPIC  -rdynamic CMakeFiles/client.dir/caller.cpp.o  -o ../../../../bin/client  -L/usr/local/lib  -L/root/liupeng/pearl_house/pearl_house/lib -Wl,-rpath,/usr/local/lib:/root/liupeng/pearl_house/pearl_house/lib ../../../../lib/libbase_algorithm.a 
